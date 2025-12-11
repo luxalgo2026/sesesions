@@ -44,7 +44,7 @@ const {
   const path = require('path')
   const prefix = config.PREFIX
   
-  const ownerNumber = ['255789661031', '255612491554']
+  const ownerNumber = ['255789661031']
   
   const tempDir = path.join(os.tmpdir(), 'cache-temp')
   if (!fs.existsSync(tempDir)) {
@@ -113,22 +113,37 @@ const port = process.env.PORT || 9090;
   console.log('Plugins installed successful ✅')
   console.log('Bot connected to whatsapp ✅')
   
-  let up = `╭─〔 *🤖 SILA-MD BOT* 〕  
-├─▸ *Ultra Super Fast Powerfull ⚡*  
-│     *World Best BOT SILA-MD* 
-╰─➤ *Your Smart WhatsApp Bot is Ready To use 🚀!*  
+  let up = `╔═══════════════════════
+║  *𝚆𝙴𝙻𝙲𝙾𝙼𝙴 𝚃𝙾 𝚂𝙸𝙻𝙰 𝙼𝙳*
+╚═══════════════════════
 
-- *💙 Thank You for Choosing SILA-MD!* 
+┌─「 𝙱𝙾𝚃 𝙸𝙽𝙵𝙾 」━━━━━━━━━━━━━━━
+│ 
+│  *👋 Welcome!* Thank you for choosing
+│  *⚡ SILA MD Premium WhatsApp Bot*
+│  *🎯 Simple, Powerful & Feature-Rich*
+│ 
+│  *🔧 Your Prefix:* ${prefix}
+│  *📊 Version:* 3.0.0 Premium
+│  *🏆 Status:* Active & Running
+│ 
+└────────────────────
 
-╭──〔 🔗 *Information* 〕  
-├─ 🧩 *Prefix:* = ${prefix}
-├─ 📢 *Join Channel:*  
-│    https://whatsapp.com/channel/0029VbBG4gfISTkCpKxyMH02  
-├─ 🌟 *Star the Repo:*  
-│    https://github.com/SILA-TECH/SILA-MD  
-╰─🚀 *POWERED BY SILA-TECH*`;
+┌─「 🎯 𝙲𝙾𝙽𝙽𝙴𝙲𝚃 𝚆𝙸𝚃𝙷 𝚄𝚂 」━━━━━━━
+│ 
+│  *📢 Official Channel:*
+│  https://whatsapp.com/channel/0029VbBG4gfISTkCpKxyMH02
+│ 
+│  *⭐ GitHub Repository:*
+│  https://github.com/SILA-TECH/SILA-MD
+│ 
+└────────────────────
 
-    conn.sendMessage(conn.user.id,{ image: { url: `https://files.catbox.moe/jwmx1j.jpg` }, caption: up })
+*🚀 Get Started:* Use *.menu* to see all commands
+
+*𝙿𝚘𝚠𝚎𝚛𝚎𝚍 𝚋𝚢 𝚂𝚒𝚕𝚊 𝚃𝚎𝚌𝚑*`;
+
+    conn.sendMessage(conn.user.id,{ image: { url: `https://i.ibb.co/RGLKzshm/SulaMd.jpg` }, caption: up })
   }
   })
   conn.ev.on('creds.update', saveCreds)
