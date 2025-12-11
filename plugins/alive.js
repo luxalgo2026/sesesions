@@ -2,46 +2,65 @@ const { cmd, commands } = require('../command');
 const os = require("os");
 const { runtime } = require('../lib/functions');
 
+//=========== Fake vCard ===========//
+const fakevCard = {
+    key: {
+        fromMe: false,
+        participant: "0@s.whatsapp.net",
+        remoteJid: "status@broadcast"
+    },
+    message: {
+        contactMessage: {
+            displayName: "© SILA AI 🎅",
+            vcard: `BEGIN:VCARD\nVERSION:3.0\nFN:SILA AI CHRISTMAS\nORG:SILA AI;\nTEL;type=CELL;type=VOICE;waid=255612491554:+255612491554\nEND:VCARD`
+        }
+    }
+};
+
+//=========== ALIVE COMMAND ===========//
 cmd({
     pattern: "alive",
     alias: ["status", "runtime", "uptime"],
     desc: "Check uptime and system status",
     category: "main",
-    react: "🧚‍♂️",
+    react: "⚡",
     filename: __filename
 },
-async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
+async (conn, mek, m, { from, reply }) => {
     try {
-        // Generate system status message
-        const status = `╭━━〔 *DARK-SHADOW-MD* 〕━━┈⊷
-┃◈╭────────────
-┃◈┃• *⏳Uptime*:  ${runtime(process.uptime())} 
-┃◈┃• *📟 Ram usage*: ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}MB / ${(os.totalmem() / 1024 / 1024).toFixed(2)}MB
-┃◈┃• *⚙️ HostName*: ${os.hostname()}
-┃◈┃• *👨‍💻 Owner*: DARK SHADOW
-┃◈┃• *🧬 Version*: 3.0.0 BETA
-┃◈└───────────
-╰──────────────
-> © ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴅᴀʀᴋ ꜱʜᴀᴅᴏᴡ`;
 
-        // Send the status message with an image
-        await conn.sendMessage(from, { 
-            image: { url: `https://telegra.ph/file/1ece2e0281513c05d20ee.jpg` },  // Image URL
-            caption: status,
-            contextInfo: {
-                mentionedJid: [m.sender],
-                forwardingScore: 999,
-                isForwarded: true,
-                forwardedNewsletterMessageInfo: {
-                    newsletterJid: '120363409414874042@newsletter',
-                    newsletterName: 'DARK-SHADOW',
-                    serverMessageId: 143
+        const txt = `
+╔═══ ✦ *SILA MD STATUS* ✦
+║
+║ • ⏳ *Uptime:*  ${runtime(process.uptime())}
+║ • 📟 *RAM:* ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}MB / ${(os.totalmem() / 1024 / 1024).toFixed(2)}MB
+║ • ⚙ *Host:* ${os.hostname()}
+║ • 👑 *Owner:* SILA AI
+║ • 🚀 *Version:* 3.0 BETA
+║
+╚══❯  Bot is Active & Running ✓`;
+
+        await conn.sendMessage(
+            from,
+            {
+                image: { url: `https://files.catbox.moe/jwmx1j.jpg` },
+                caption: txt,
+                contextInfo: {
+                    mentionedJid: [m.sender],
+                    forwardingScore: 999,
+                    isForwarded: true,
+                    forwardedNewsletterMessageInfo: {
+                        newsletterJid: '120363402325089913@newsletter',
+                        newsletterName: 'SILA MD',
+                        serverMessageId: 143
+                    }
                 }
-            }
-        }, { quoted: mek });
+            },
+            { quoted: fakevCard }
+        );
 
     } catch (e) {
-        console.error("Error in alive command:", e);
-        reply(`An error occurred: ${e.message}`);
+        console.error("Alive command error:", e);
+        reply(`Error: ${e.message}`);
     }
 });
