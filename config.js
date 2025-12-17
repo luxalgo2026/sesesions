@@ -47,8 +47,8 @@ const config = {
     ]
 };
 
-// Channel info template
-config.channelInfo = () => {
+// SILAINFO function (not attached to config)
+const silainfo = () => {
     const randomImage = config.BOT_IMAGES[Math.floor(Math.random() * config.BOT_IMAGES.length)];
     return {
         contextInfo: {
@@ -76,8 +76,8 @@ config.channelInfo = () => {
     };
 };
 
-// Custom myquoted
-config.myquoted = {
+// MYQUOTED object (not attached to config)
+const myquoted = {
     key: {
         remoteJid: 'status@broadcast',
         participant: '13135550002@s.whatsapp.net',
@@ -101,3 +101,7 @@ config.myquoted = {
 };
 
 module.exports = config;
+
+// Export silainfo and myquoted separately
+module.exports.silainfo = silainfo;
+module.exports.myquoted = myquoted;
