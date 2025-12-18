@@ -1,62 +1,51 @@
-const { cmd, commands } = require('../command');
+const { cmd } = require('../command');
 const os = require("os");
 const { runtime } = require('../lib/functions');
-
-//=========== Fake vCard ===========//
-const fakevCard = {
-    key: {
-        fromMe: false,
-        participant: "0@s.whatsapp.net",
-        remoteJid: "status@broadcast"
-    },
-    message: {
-        contactMessage: {
-            displayName: "© SILA AI 🎅",
-            vcard: `BEGIN:VCARD\nVERSION:3.0\nFN:SILA AI CHRISTMAS\nORG:SILA AI;\nTEL;type=CELL;type=VOICE;waid=255612491554:+255612491554\nEND:VCARD`
-        }
-    }
-};
+const { silainfo, myquoted } = require('../config');
 
 //=========== ALIVE COMMAND ===========//
 cmd({
     pattern: "alive",
-    alias: ["status", "runtime", "uptime"],
-    desc: "Check uptime and system status",
+    alias: ["status", "runtime", "uptime", "on", "active"],
+    desc: "Check bot status and system info",
     category: "main",
     react: "⚡",
     filename: __filename
 },
-async (conn, mek, m, { from, reply }) => {
+async (conn, mek, m, { from, reply, pushName, sender }) => {
     try {
+        // Calculate memory usage
+        const used = process.memoryUsage();
+        const usedMB = (used.heapUsed / 1024 / 1024).toFixed(2);
+        const totalMB = (os.totalmem() / 1024 / 1024).toFixed(2);
+        const freeMB = (os.freemem() / 1024 / 1024).toFixed(2);
+        
+        // Platform info
+        const platform = os.platform();
+        const arch = os.arch();
+        const cpus = os.cpus().length;
+        
+        // Create status message with custom fonts
+        const txt = `━━━〔 🎅 𝚂𝙸𝙻𝙰 𝙼𝙳 𝚂𝚃𝙰𝚃𝚄𝚂 🎅 〕━━━┈⊷
+┃🎅│ 𝚄𝙿𝚃𝙸𝙼𝙴 :❯ ${runtime(process.uptime())}
+┃🎅│ 𝚁𝙰𝙼 :❯ ${usedMB}MB / ${totalMB}MB
+┃🎅│ 𝙵𝚁𝙴𝙴 𝚁𝙰𝙼 :❯ ${freeMB}MB
+┃🎅│ 𝙿𝙻𝙰𝚃𝙵𝙾𝚁𝙼 :❯ ${platform} ${arch}
+┃🎅│ 𝙲𝙿𝚄𝚂 :❯ ${cpus} 𝙲𝙾𝚁𝙴𝚂
+┃🎅│ 𝙾𝚆𝙽𝙴𝚁 :❯ 𝚂𝙸𝙻𝙰 𝙰𝙸
+┃🎅│ 𝚅𝙴𝚁𝚂𝙸𝙾𝙽 :❯ 3.0 𝙱𝙴𝚃𝙰
+╰━━━━━━━━━━━━━━━┈⊷
 
-        const txt = `
-╔═══ ✦ *SILA MD STATUS* ✦
-║
-║ • ⏳ *Uptime:*  ${runtime(process.uptime())}
-║ • 📟 *RAM:* ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}MB / ${(os.totalmem() / 1024 / 1024).toFixed(2)}MB
-║ • ⚙ *Host:* ${os.hostname()}
-║ • 👑 *Owner:* SILA AI
-║ • 🚀 *Version:* 3.0 BETA
-║
-╚══❯  Bot is Active & Running ✓`;
+*𝙱𝙾𝚃 𝙸𝚂 𝙰𝙲𝚃𝙸𝚅𝙴 & 𝚁𝚄𝙽𝙽𝙸𝙽𝙶 ⚡*`;
 
         await conn.sendMessage(
             from,
             {
                 image: { url: `https://files.catbox.moe/jwmx1j.jpg` },
                 caption: txt,
-                contextInfo: {
-                    mentionedJid: [m.sender],
-                    forwardingScore: 999,
-                    isForwarded: true,
-                    forwardedNewsletterMessageInfo: {
-                        newsletterJid: '120363402325089913@newsletter',
-                        newsletterName: 'SILA MD',
-                        serverMessageId: 143
-                    }
-                }
+                ...silainfo()
             },
-            { quoted: fakevCard }
+            { quoted: myquoted }
         );
 
     } catch (e) {
