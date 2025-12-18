@@ -170,7 +170,7 @@ try {
       isForwarded: true,
       forwardedNewsletterMessageInfo: {
         newsletterJid: '120363402325089913@newsletter',
-        newsletterName: 'SILA MD',
+        newsletterName: '🎅SILA TECH🎅',
         serverMessageId: 100
       }
     }
@@ -297,7 +297,7 @@ try {
     };
     
     const udp = botNumber.split('@')[0];
-    const jawad = ('255612491554');
+    const jawad = ('255612491554', '255789661031');
     let isCreator = [udp, jawad, config.DEV]
       .map(v => v.replace(/[^0-9]/g) + '@s.whatsapp.net')
       .includes(mek.sender);
