@@ -1,34 +1,16 @@
 const config = require('../config')
 const { cmd, commands } = require('../command');
-const os = require("os")
-const { runtime } = require('../lib/functions')
-const axios = require('axios')
-
-// FakevCard
-const fakevCard = {
-    key: {
-        fromMe: false,
-        participant: "0@s.whatsapp.net",
-        remoteJid: "status@broadcast"
-    },
-    message: {
-        contactMessage: {
-            displayName: "© SILA AI 🎅",
-            vcard: `BEGIN:VCARD\nVERSION:3.0\nFN:SILA AI CHRISTMAS\nORG:SILA AI;\nTEL;type=CELL;type=VOICE;waid=255612491554:+255612491554\nEND:VCARD`
-        }
-    }
-};
+const { silainfo, myquoted } = require('../config');
 
 cmd({
     pattern: "menu",
-    alias: ["allmenu","fullmenu"],
-    use: '.menu',
-    desc: "menu the bot",
-    category: "menu",
-    react: "⚡",
+    alias: ["allmenu","fullmenu","help","cmd"],
+    desc: "Show all bot commands",
+    category: "main",
+    react: "📋",
     filename: __filename
 }, 
-async (conn, mek, m, { from, reply }) => {
+async (conn, mek, m, { from, reply, react, pushName, sender }) => {
     try {
         let dec = `
 ╭▸─────────────────▸╮
@@ -125,29 +107,135 @@ async (conn, mek, m, { from, reply }) => {
 ╭▸─────────────────▸╮
 │    — 𝐒𝐈𝐋𝐀 𝐓𝐄𝐂𝐇 —    │
 ╰▸─────────────────▸╯
-> ${config.DESCRIPTION}`
 
+*Total Commands:* ${commands.length}
+*User:* ${pushName || sender.split('@')[0]}
+
+╔═❯ ${config.DESCRIPTION}`;
+
+        const buttonMessage = {
+            text: dec,
+            footer: "📱 Click buttons below for more",
+            buttons: [
+                { 
+                    buttonId: "owner_info", 
+                    buttonText: { displayText: '👑 Owner Info' } 
+                },
+                { 
+                    buttonId: "cmd_list", 
+                    buttonText: { displayText: '📜 All Commands' } 
+                }
+            ],
+            ...silainfo()
+        };
+        
         await conn.sendMessage(
             from,
-            {
-                image: { url: `https://files.catbox.moe/jwmx1j.jpg` },
-                caption: dec,
-                contextInfo: {
-                    mentionedJid: [m.sender],
-                    forwardingScore: 999,
-                    isForwarded: true,
-                    forwardedNewsletterMessageInfo: {
-                        newsletterJid: '120363402325089913@newsletter',
-                        newsletterName: 'SILA MD',
-                        serverMessageId: 143
-                    }
-                }
-            },
-            { quoted: fakevCard }
+            buttonMessage,
+            { quoted: myquoted }
         );
+        
+        await react("✅");
 
     } catch (e) {
         console.log(e);
-        reply(`${e}`);
+        reply(`Error: ${e.message}`);
+    }
+});
+
+// Handle button responses
+cmd({
+    on: "click",
+    fromMe: false,
+    dontAddCommandList: true
+},
+async (conn, mek, m, { from, body, reply, react, sender }) => {
+    try {
+        if (body === "owner_info") {
+            await react("👑");
+            
+            // Owner vcard info
+            const ownerInfo = `╭▸─────────────────▸╮
+│    「 𝐎𝐖𝐍𝐄𝐑 𝐈𝐍𝐅𝐎 」    │
+╰▸─────────────────▸╯
+
+╔► 𝐍𝐚𝐦𝐞
+╚► → SILA AI
+
+╔► 𝐍𝐮𝐦𝐛𝐞𝐫
+╚► → +${config.OWNER_NUMBER}
+
+╔► 𝐁𝐨𝐭 𝐍𝐚𝐦𝐞
+╚► → ${config.BOT_NAME}
+
+╔► 𝐏𝐫𝐞𝐟𝐢𝐱
+╚► → ${config.PREFIX}
+
+╔► 𝐕𝐞𝐫𝐬𝐢𝐨𝐧
+╚► → S1
+
+╭▸─────────────────▸╮
+│ — 𝐒𝐈𝐋𝐀 𝐓𝐄𝐂𝐇 — │
+╰▸─────────────────▸╯
+
+*Contact owner for support*`;
+            
+            // Create vcard
+            const vcard = `BEGIN:VCARD
+VERSION:3.0
+FN:${config.OWNER_NAME}
+N:;${config.OWNER_NAME};;;
+TEL;type=CELL;type=VOICE;waid=${config.OWNER_NUMBER}:+${config.OWNER_NUMBER}
+ORG:SILA TECH;
+TITLE:Bot Owner
+NOTE:Contact for bot support
+URL:https://wa.me/${config.OWNER_NUMBER}
+END:VCARD`;
+            
+            await conn.sendMessage(from, {
+                contacts: {
+                    displayName: config.OWNER_NAME,
+                    contacts: [{
+                        vcard: vcard
+                    }]
+                },
+                caption: ownerInfo
+            }, { quoted: myquoted });
+            
+        } else if (body === "cmd_list") {
+            await react("📜");
+            
+            // Group commands by category
+            const categories = {};
+            commands.forEach(cmd => {
+                if (!categories[cmd.category]) {
+                    categories[cmd.category] = [];
+                }
+                categories[cmd.category].push(cmd.pattern);
+            });
+            
+            let cmdList = `╭▸─────────────────▸╮
+│    「 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒 𝐋𝐈𝐒𝐓 」    │
+╰▸─────────────────▸╯\n\n`;
+            
+            for (const [category, cmds] of Object.entries(categories)) {
+                cmdList += `╔► ${category.toUpperCase()}\n`;
+                cmds.forEach(cmd => {
+                    cmdList += `╚► → ${config.PREFIX}${cmd}\n`;
+                });
+                cmdList += '\n';
+            }
+            
+            cmdList += `╭▸─────────────────▸╮
+│ — 𝐓𝐨𝐭𝐚𝐥: ${commands.length} 𝐂𝐦𝐝𝐬 — │
+╰▸─────────────────▸╯`;
+            
+            await reply(cmdList);
+        }
+        
+    } catch (error) {
+        console.error("Button handler error:", error);
+        await react("❌");
+        reply("❌ *Action failed!*");
     }
 });
