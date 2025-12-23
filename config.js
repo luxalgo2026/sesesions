@@ -6,7 +6,7 @@ function convertToBool(text, fault = 'true') {
 }
 
 const config = {
-    SESSION_ID: process.env.SESSION_ID || "POPKID;;;3N0xGQpb#kNFSJpPE00o2zpgh4FJq_5TxNvmX8FWL2jWyWWRFOn8",
+    SESSION_ID: process.env.SESSION_ID || "POPKID;;;vVF21AJJ#OpLZH0XKpKZxtTs6txGzYXzhTEo_OPFQ2bkriP5kcOI",
     AUTO_STATUS_SEEN: process.env.AUTO_STATUS_SEEN || "true",
     AUTO_STATUS_REPLY: process.env.AUTO_STATUS_REPLY || "false",
     AUTO_STATUS_REACT: process.env.AUTO_STATUS_REACT || "true",
@@ -17,10 +17,10 @@ const config = {
     CUSTOM_REACT: process.env.CUSTOM_REACT || "false",
     CUSTOM_REACT_EMOJIS: process.env.CUSTOM_REACT_EMOJIS || "💝,💖,💗,❤️‍🩹,❤️,🧡,💛,💚,💙,💜,🤎,🖤,🤍",
     DELETE_LINKS: process.env.DELETE_LINKS || "false",
-    OWNER_NUMBER: process.env.OWNER_NUMBER || "255612491554",
+    OWNER_NUMBER: process.env.OWNER_NUMBER || "255710017197",
     OWNER_NAME: process.env.OWNER_NAME || "SILA WHISPER",
     DESCRIPTION: process.env.DESCRIPTION || "*© 𝐏𝐎𝐖𝐄𝐃 𝐁𝐘 𝐒𝐈𝐋𝐀 𝐓𝐄𝐂𝐇*",
-    ALIVE_IMG: process.env.ALIVE_IMG || "https://files.catbox.moe/xefyuj.jpg",
+    ALIVE_IMG: process.env.ALIVE_IMG || "https://files.catbox.moe/277zt9.jpg",
     LIVE_MSG: process.env.LIVE_MSG || "> HELLO I'AM *SILA WHISPER*🌝",
     READ_MESSAGE: process.env.READ_MESSAGE || "false",
     AUTO_REACT: process.env.AUTO_REACT || "false",
@@ -34,16 +34,16 @@ const config = {
     PUBLIC_MODE: process.env.PUBLIC_MODE || "true",
     AUTO_TYPING: process.env.AUTO_TYPING || "true",
     READ_CMD: process.env.READ_CMD || "false",
-    DEV: process.env.DEV || "255612491554",
+    DEV: process.env.DEV || "255710017197",
     ANTI_VV: process.env.ANTI_VV || "true",
     ANTI_DEL_PATH: process.env.ANTI_DEL_PATH || "inbox",
     AUTO_RECORDING: process.env.AUTO_RECORDING || "false",
     
     // Add images array for random selection
     BOT_IMAGES: [
-        "https://files.catbox.moe/xefyuj.jpg",
-        "https://files.catbox.moe/abc123.jpg",
-        "https://files.catbox.moe/def456.jpg"
+        "https://files.catbox.moe/277zt9.jpg",
+        "https://files.catbox.moe/277zt9.jpg",
+        "https://files.catbox.moe/277zt9.jpg"
     ]
 };
 
@@ -53,7 +53,7 @@ const silainfo = () => {
     return {
         contextInfo: {
             externalAdReply: {
-                title: 'SILA AI',
+                title: '© Sila Tech',
                 body: 'WhatsApp ‧ Verified',
                 thumbnailUrl: randomImage,
                 thumbnailWidth: 64,
@@ -67,7 +67,7 @@ const silainfo = () => {
             },
             forwardedNewsletterMessageInfo: {
                 newsletterJid: '120363402325089913@newsletter',
-                newsletterName: '🎅SILA TECH🎅',
+                newsletterName: '© Sila Tech',
                 serverMessageId: Math.floor(Math.random() * 1000000)
             },
             isForwarded: true,
