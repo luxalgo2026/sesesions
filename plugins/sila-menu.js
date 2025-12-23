@@ -3,8 +3,8 @@ const { cmd, commands } = require('../command');
 const { silainfo, myquoted } = require('../config');
 
 cmd({
-    pattern: "menu",
-    alias: ["allmenu","fullmenu","help","cmd"],
+    pattern: "menu2",
+    alias: ["allmenu","fullmenu","list","cmd2"],
     desc: "Show all bot commands",
     category: "main",
     react: "📋",
