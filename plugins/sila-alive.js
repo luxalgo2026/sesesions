@@ -8,7 +8,7 @@ cmd({
     alias: ["status", "runtime", "uptime", "on", "active", "bot", "info"],
     desc: "Check bot status and system information",
     category: "main",
-    react: "⚡",
+    react: "🧚‍♂️",
     filename: __filename
 },
 async (conn, mek, m, { from, reply, pushName, sender, botNumber, participants, groupMetadata }) => {
